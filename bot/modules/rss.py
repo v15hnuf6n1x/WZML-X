@@ -265,8 +265,11 @@ async def rss_sub(_, message, pre_event):
                 elif rss_d.entries[0].get("summary"):
                     summary = rss_d.entries[0]["summary"]
                     matches = size_regex.findall(summary)
-                    sizes = [match[0] for match in matches]
-                    size = get_size_bytes(sizes[0])
+                    if matches:
+                        sizes = [match[0] for match in matches]
+                        size = get_size_bytes(sizes[0])
+                    else:
+                        size = 0
                 try:
                     last_link = rss_d.entries[0]["links"][1]["href"]
                 except IndexError:
@@ -876,8 +879,11 @@ async def rss_monitor():
                         elif rss_d.entries[feed_count].get("summary"):
                             summary = rss_d.entries[feed_count]["summary"]
                             matches = size_regex.findall(summary)
-                            sizes = [match[0] for match in matches]
-                            size = get_size_bytes(sizes[0])
+                            if matches:
+                                sizes = [match[0] for match in matches]
+                                size = get_size_bytes(sizes[0])
+                            else:
+                                size = 0
                         else:
                             size = 0
                     except IndexError:
